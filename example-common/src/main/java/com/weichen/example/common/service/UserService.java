@@ -12,6 +12,6 @@ public interface UserService {
      * @param user
      * @return
      */
-    User getUser(User user);
+    Object getUser(User user);
 
 }

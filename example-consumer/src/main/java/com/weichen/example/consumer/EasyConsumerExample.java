@@ -9,13 +9,13 @@ import com.weichen.example.common.service.UserService;
 public class EasyConsumerExample {
 
     public static void main(String[] args) {
-        // todo 需要获取 UserService 的实现类对象
-        UserService userService = null;
+        // 静态代理
+        UserService userService = new UserServiceProxy();
         User user = new User();
         user.setName("weichen");
 
         // 调用
-        User newUser = userService.getUser(user);
+        User newUser = (User) userService.getUser(user);
         if (newUser != null){
             System.out.println(newUser.getName());
         } else {
