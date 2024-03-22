@@ -1,7 +1,10 @@
 package com.weichen.wcrpc;
 
+import com.weichen.wcrpc.config.RegistryConfig;
 import com.weichen.wcrpc.config.RpcConfig;
 import com.weichen.wcrpc.constant.RpcConstant;
+import com.weichen.wcrpc.registry.Registry;
+import com.weichen.wcrpc.registry.RegistryFactory;
 import com.weichen.wcrpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +25,12 @@ public class RpcApplication {
     public static void init(RpcConfig newRpcConfig){
         rpcConfig = newRpcConfig;
         log.info("rpc init, config = {}", newRpcConfig.toString());
+
+        //注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init,config = {}",registryConfig);
     }
 
     /**

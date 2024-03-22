@@ -1,5 +1,6 @@
 package com.weichen.wcrpc.model;
 
+import com.weichen.wcrpc.constant.RpcConstant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +37,9 @@ public class RpcRequest implements Serializable {
      */
     private Object[] args;
 
+    /**
+     *  服务版本号
+     */
+    private String serviceVersion = RpcConstant.DEFAULT_SERVICE_VERSION;
 
 }
