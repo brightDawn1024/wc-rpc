@@ -6,6 +6,8 @@ import cn.hutool.http.HttpResponse;
 import com.weichen.wcrpc.RpcApplication;
 import com.weichen.wcrpc.config.RpcConfig;
 import com.weichen.wcrpc.constant.RpcConstant;
+import com.weichen.wcrpc.loadbalancer.LoadBalancer;
+import com.weichen.wcrpc.loadbalancer.LoadBalancerFactory;
 import com.weichen.wcrpc.model.RpcRequest;
 import com.weichen.wcrpc.model.RpcResponse;
 import com.weichen.wcrpc.model.ServiceMetaInfo;
@@ -17,7 +19,9 @@ import com.weichen.wcrpc.serializer.Serializer;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  JDK 动态代理
@@ -59,8 +63,13 @@ public class ServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }
-            // todo 从注册中心获取到的服务节点地址可能是多个，暂时先取第一个
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+
+            // 负载均衡
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+            // 将调用方法名（请求路径）作为负载均衡参数
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("methodName",rpcRequest.getMethodName());
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
 
             // 发送请求
             try (

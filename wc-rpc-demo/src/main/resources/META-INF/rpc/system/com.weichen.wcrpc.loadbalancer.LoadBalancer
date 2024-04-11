@@ -1,0 +1,3 @@
+roundRobin=com.weichen.wcrpc.loadbalancer.RoundRobinLoadBalancer
+random=com.weichen.wcrpc.loadbalancer.RandomLoadBalancer
+consistentHash=com.weichen.wcrpc.loadbalancer.ConsistentHashLoadBalancer
