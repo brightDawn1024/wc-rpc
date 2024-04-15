@@ -38,4 +38,9 @@ public class RpcConfig {
      * 负载均衡器
      */
     private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+
+    /**
+     *  模拟调用
+     */
+    private boolean mock = false;
 }
