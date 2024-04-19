@@ -12,7 +12,7 @@ public interface UserService {
      * @param user
      * @return
      */
-    Object getUser(User user);
+    User getUser(User user);
 
     /**
      *  新方法 - 获取数字
